@@ -19,7 +19,7 @@ data/
 .vscode/
 .idea/
 
-# Claude Code
+# Local config
 .claude/
 
 # OS
