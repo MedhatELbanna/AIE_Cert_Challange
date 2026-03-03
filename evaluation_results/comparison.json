@@ -1,0 +1,227 @@
+{
+  "pipeline_a": "basic",
+  "pipeline_b": "advanced",
+  "aggregate_comparison": {
+    "answer_relevancy": {
+      "a": 0.7986986028374666,
+      "b": 0.8569735272693584,
+      "delta": 0.0583,
+      "winner": "advanced"
+    },
+    "context_recall": {
+      "a": 0.5658333333333333,
+      "b": 0.607,
+      "delta": 0.0412,
+      "winner": "advanced"
+    },
+    "factual_correctness(mode=f1)": {
+      "a": 0.3127777777777778,
+      "b": 0.43200000000000005,
+      "delta": 0.1192,
+      "winner": "advanced"
+    },
+    "faithfulness": {
+      "a": 0.853863595518368,
+      "b": 0.8340148499784914,
+      "delta": -0.0198,
+      "winner": "basic"
+    }
+  },
+  "per_query_type_comparison": {
+    "multi_context": {
+      "count_a": 15,
+      "count_b": 15,
+      "answer_relevancy": {
+        "a": null,
+        "b": 0.8328000362927627,
+        "delta": null
+      },
+      "context_recall": {
+        "a": null,
+        "b": 0.8166666666666665,
+        "delta": null
+      },
+      "factual_correctness(mode=f1)": {
+        "a": null,
+        "b": 0.4846666666666667,
+        "delta": null
+      },
+      "faithfulness": {
+        "a": null,
+        "b": 0.8130496739065116,
+        "delta": null
+      }
+    },
+    "reasoning": {
+      "count_a": 25,
+      "count_b": 25,
+      "answer_relevancy": {
+        "a": 0.8493139165340037,
+        "b": 0.9095272055438448,
+        "delta": 0.0602
+      },
+      "context_recall": {
+        "a": 0.605,
+        "b": 0.564,
+        "delta": -0.041
+      },
+      "factual_correctness(mode=f1)": {
+        "a": 0.45749999999999996,
+        "b": 0.46719999999999984,
+        "delta": 0.0097
+      },
+      "faithfulness": {
+        "a": 0.8252550982156245,
+        "b": 0.8178305262437062,
+        "delta": -0.0074
+      }
+    },
+    "simple": {
+      "count_a": 10,
+      "count_b": 10,
+      "answer_relevancy": {
+        "a": 0.7531448205105832,
+        "b": 0.7618495680480363,
+        "delta": 0.0087
+      },
+      "context_recall": {
+        "a": 0.5266666666666666,
+        "b": 0.4,
+        "delta": -0.1267
+      },
+      "factual_correctness(mode=f1)": {
+        "a": 0.197,
+        "b": 0.265,
+        "delta": 0.068
+      },
+      "faithfulness": {
+        "a": 0.8767503933605628,
+        "b": 0.9059234234234236,
+        "delta": 0.0292
+      }
+    }
+  },
+  "top_disagreements": [
+    {
+      "question": "Section 12600 what is it?",
+      "max_abs_diff": 1.0,
+      "diffs": {
+        "answer_relevancy": 0.0432,
+        "context_recall": -1.0,
+        "factual_correctness(mode=f1)": 0.06,
+        "faithfulness": 0.2
+      },
+      "synthesizer": "single_hop_specific_query_synthesizer"
+    },
+    {
+      "question": "What is PSME-CRSA in the context of BMS systems?",
+      "max_abs_diff": 1.0,
+      "diffs": {
+        "answer_relevancy": -0.9513,
+        "context_recall": -1.0,
+        "factual_correctness(mode=f1)": -0.42,
+        "faithfulness": 0.0476
+      },
+      "synthesizer": "single_hop_specific_query_synthesizer"
+    },
+    {
+      "question": "What is the BSRIA standard related to building services installation?",
+      "max_abs_diff": 1.0,
+      "diffs": {
+        "answer_relevancy": 0.9865,
+        "context_recall": 1.0,
+        "factual_correctness(mode=f1)": 0.87,
+        "faithfulness": 0.0
+      },
+      "synthesizer": "single_hop_specific_query_synthesizer"
+    },
+    {
+      "question": "Point info and alarm manage how they connect in BMS?",
+      "max_abs_diff": 1.0,
+      "diffs": {
+        "answer_relevancy": 0.9358,
+        "context_recall": 1.0,
+        "factual_correctness(mode=f1)": -0.24
+      },
+      "synthesizer": "multi_hop_abstract_query_synthesizer"
+    },
+    {
+      "question": "How do the system support user-defind data archiving intervals and real-time clock and schduling?",
+      "max_abs_diff": 0.6667,
+      "diffs": {
+        "answer_relevancy": 0.026,
+        "context_recall": -0.6667,
+        "factual_correctness(mode=f1)": 0.09,
+        "faithfulness": -0.2353
+      },
+      "synthesizer": "multi_hop_abstract_query_synthesizer"
+    },
+    {
+      "question": "As a Building Management System (BMS) Engineer responsible for the installation, programming, and maintenance of systems",
+      "max_abs_diff": 0.6,
+      "diffs": {
+        "answer_relevancy": 0.0001,
+        "context_recall": -0.6,
+        "factual_correctness(mode=f1)": -0.15,
+        "faithfulness": -0.1782
+      },
+      "synthesizer": "single_hop_specific_query_synthesizer"
+    },
+    {
+      "question": "What PSME-CRSA mean in BMS stuff?",
+      "max_abs_diff": 0.5,
+      "diffs": {
+        "answer_relevancy": 0.0,
+        "context_recall": 0.5,
+        "factual_correctness(mode=f1)": -0.2,
+        "faithfulness": 0.0
+      },
+      "synthesizer": "single_hop_specific_query_synthesizer"
+    },
+    {
+      "question": "How does the management level support multiple operator workstations in the BMS system?",
+      "max_abs_diff": 0.5,
+      "diffs": {
+        "answer_relevancy": 0.0,
+        "context_recall": 0.5,
+        "factual_correctness(mode=f1)": 0.08,
+        "faithfulness": -0.0323
+      },
+      "synthesizer": "multi_hop_abstract_query_synthesizer"
+    },
+    {
+      "question": "How do the hardware componants and control device time scheduel managment work togther in the BMS?",
+      "max_abs_diff": 0.5,
+      "diffs": {
+        "answer_relevancy": -0.0126,
+        "context_recall": -0.5,
+        "factual_correctness(mode=f1)": -0.05,
+        "faithfulness": -0.4138
+      },
+      "synthesizer": "multi_hop_abstract_query_synthesizer"
+    },
+    {
+      "question": "Building Management System how it work?",
+      "max_abs_diff": 0.46,
+      "diffs": {
+        "answer_relevancy": 0.0177,
+        "context_recall": 0.0,
+        "factual_correctness(mode=f1)": 0.46,
+        "faithfulness": 0.3481
+      },
+      "synthesizer": "single_hop_specific_query_synthesizer"
+    }
+  ],
+  "failure_analysis": {
+    "basic_errors": 0,
+    "advanced_errors": 0,
+    "basic_error_rate": 0.0,
+    "advanced_error_rate": 0.0
+  },
+  "summary": {
+    "a_wins": 1,
+    "b_wins": 3,
+    "ties": 0,
+    "overall_winner": "advanced"
+  }
+}
