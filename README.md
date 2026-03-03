@@ -2,6 +2,12 @@
 
 Multi-agent AI system for automated compliance checking of engineering documents against project specifications and industry standards. Built with LangGraph's Deep Agent pattern, the system orchestrates specialized Agentic RAG agents to extract requirements, match proposal claims, look up referenced standards, and produce structured compliance verdicts with severity ratings.
 
+### Use Case and Target Audience
+
+EDR addresses a critical bottleneck in the engineering procurement workflow: the manual review of vendor proposals against project specifications. In practice, a **technical engineering consultant** prepares a detailed specification (e.g., a 67-page BMS spec covering HVAC controls, network architecture, alarm management, and integration requirements) and then must methodically verify that the **contractor's** submitted proposal actually addresses every requirement, references the correct industry standards, and meets the specified acceptance criteria. This review process is time-consuming, error-prone, and heavily dependent on the reviewer's domain expertise and attention to detail.
+
+EDR automates this review for both audiences. The **engineering consultant** uses it to rapidly validate that a contractor's submittal is compliant before issuing approval, flagging gaps and partial compliance with severity ratings so they can focus their expert judgment on the most critical issues. The **contractor** uses it as a pre-submission quality check, running their draft proposal against the specification to identify missing requirements, weak compliance areas, and standards they may have overlooked — allowing them to strengthen their submittal before formal review. By structuring the output as per-requirement verdicts (Compliant, Partial, Non-Compliant, Not Addressed) with evidence and recommendations, EDR provides an actionable compliance report that fits directly into existing engineering review workflows.
+
 ---
 
 ## Table of Contents
