@@ -2,16 +2,11 @@
 
 Multi-agent AI system for automated compliance checking of engineering documents against project specifications and industry standards. Built with LangGraph's Deep Agent pattern, the system orchestrates specialized Agentic RAG agents to extract requirements, match proposal claims, look up referenced standards, and produce structured compliance verdicts with severity ratings.
 
-### Use Case and Target Audience
-
-EDR addresses a critical bottleneck in the engineering procurement workflow: the manual review of vendor proposals against project specifications. In practice, a **technical engineering consultant** prepares a detailed specification (e.g., a 67-page BMS spec covering HVAC controls, network architecture, alarm management, and integration requirements) and then must methodically verify that the **contractor's** submitted proposal actually addresses every requirement, references the correct industry standards, and meets the specified acceptance criteria. This review process is time-consuming, error-prone, and heavily dependent on the reviewer's domain expertise and attention to detail.
-
-EDR automates this review for both audiences. The **engineering consultant** uses it to rapidly validate that a contractor's submittal is compliant before issuing approval, flagging gaps and partial compliance with severity ratings so they can focus their expert judgment on the most critical issues. The **contractor** uses it as a pre-submission quality check, running their draft proposal against the specification to identify missing requirements, weak compliance areas, and standards they may have overlooked — allowing them to strengthen their submittal before formal review. By structuring the output as per-requirement verdicts (Compliant, Partial, Non-Compliant, Not Addressed) with evidence and recommendations, EDR provides an actionable compliance report that fits directly into existing engineering review workflows.
-
 ---
 
 ## Table of Contents
 
+- [Task 1: Problem, Audience, and Scope](#task-1-problem-audience-and-scope)
 - [Task 2: Proposed Solution](#task-2-proposed-solution)
 - [Task 3: Data Sources and Chunking Strategy](#task-3-data-sources-and-chunking-strategy)
 - [Task 4: End-to-End Prototype](#task-4-end-to-end-prototype)
@@ -19,6 +14,35 @@ EDR automates this review for both audiences. The **engineering consultant** use
 - [Task 6: Advanced Retrieval Technique and Comparison](#task-6-advanced-retrieval-technique-and-comparison)
 - [Task 7: Next Steps](#task-7-next-steps)
 - [Setup and Installation](#setup-and-installation)
+
+---
+
+## Task 1: Problem, Audience, and Scope
+
+### Problem Statement
+
+EDR automates the compliance review of engineering vendor proposals against project specifications — replacing a manual, error-prone process with structured, per-requirement verdicts and severity ratings.
+
+### Why This Is a Problem
+
+In engineering procurement, a **technical engineering consultant** prepares a detailed specification (e.g., a 67-page BMS spec covering HVAC controls, network architecture, alarm management, and integration requirements) and then must methodically verify that the **contractor's** submitted proposal actually addresses every requirement, references the correct industry standards, and meets the specified acceptance criteria. This review process is time-consuming, error-prone, and heavily dependent on the reviewer's domain expertise and attention to detail.
+
+EDR automates this review for both audiences. The **engineering consultant** uses it to rapidly validate that a contractor's submittal is compliant before issuing approval, flagging gaps and partial compliance with severity ratings so they can focus their expert judgment on the most critical issues. The **contractor** uses it as a pre-submission quality check, running their draft proposal against the specification to identify missing requirements, weak compliance areas, and standards they may have overlooked — allowing them to strengthen their submittal before formal review. By structuring the output as per-requirement verdicts (Compliant, Partial, Non-Compliant, Not Addressed) with evidence and recommendations, EDR provides an actionable compliance report that fits directly into existing engineering review workflows.
+
+### Evaluation Questions and Input-Output Pairs
+
+The following input-output pairs define the core capabilities the system must demonstrate. These were used alongside the 50-question RAGAS synthetic testset (see [Task 5](#task-5-ragas-evaluation--baseline-results)) to evaluate the application.
+
+| # | Input (Question / Task) | Expected Output |
+|---|------------------------|-----------------|
+| 1 | Given the BMS spec and proposal, what are the HVAC control requirements and does the proposal address them? | List of HVAC control requirements extracted from the spec, matched proposal claims, and per-requirement compliance verdicts with severity ratings |
+| 2 | Does the proposal reference ASHRAE 135 (BACnet) as required by the specification? | Verdict indicating whether the proposal explicitly references ASHRAE 135, with evidence quotes from both documents |
+| 3 | What requirements in the specification are not addressed at all by the proposal? | List of NOT_ADDRESSED requirements with their section references and severity (CRITICAL/MAJOR/MINOR) |
+| 4 | How does the proposed network architecture compare to what the spec requires? | Side-by-side comparison of spec requirements vs. proposal claims for network topology, protocols, and integration points |
+| 5 | What industry standards are referenced in Section 12651 of the specification? | Extracted list of standards (ASHRAE, NFPA, SMACNA, BSRIA, etc.) with their relevance to BMS requirements |
+| 6 | Does the proposal meet the alarm management requirements? | Compliance verdicts for alarm-related requirements covering alarm types, notification methods, logging, and acknowledgment workflows |
+| 7 | What are the data archiving and trending requirements, and are they met? | Requirements for historization intervals, trend configuration, and data retention — with proposal compliance status |
+| 8 | Summarize the overall compliance status of the proposal against the specification. | Aggregate compliance report: count of COMPLIANT, PARTIAL, NON_COMPLIANT, and NOT_ADDRESSED verdicts with a severity breakdown |
 
 ---
 
@@ -274,6 +298,16 @@ Four RAGAS metrics were used to evaluate retrieval and generation quality:
 | **Faithfulness** | Whether the generated answer is supported by the retrieved contexts (no hallucination) |
 | **Factual Correctness** (F1) | Overlap between generated answer claims and ground-truth reference claims |
 | **Answer Relevancy** | How relevant and focused the answer is to the original question |
+
+#### Why Factual Correctness Instead of Context Precision
+
+The standard RAGAS metric suite includes Context Precision (whether relevant retrieved chunks rank above irrelevant ones). We replaced it with **Factual Correctness (F1)** because it is a stronger fit for a compliance review system:
+
+- **Context Precision is a retrieval-stage proxy**: It measures whether the retriever *ranks* relevant documents higher, but says nothing about whether the final answer is actually correct. A perfectly ranked retrieval can still produce a wrong compliance verdict if the LLM misinterprets the context.
+- **Factual Correctness is an end-to-end metric**: It measures claim-level overlap between the generated answer and the ground-truth reference, catching failures at both the retrieval *and* generation stages. For a system whose output is structured compliance verdicts, what matters is whether each verdict's evidence and conclusions are factually accurate — not just whether the retriever's top-k ranking was optimal.
+- **Compliance verdicts have real-world consequences**: An incorrect verdict could approve a non-compliant proposal or reject a compliant one. Factual Correctness directly quantifies this risk by measuring precision (are the system's claims true?) and recall (did it capture all relevant facts?) as an F1 score.
+
+In practice, Context Recall already provides a retrieval-quality signal (did we retrieve enough relevant content?). Adding Context Precision on top would give a second retrieval metric at the expense of having no generation-quality metric beyond Faithfulness. Factual Correctness fills that gap by evaluating the final output against the ground truth.
 
 ### Baseline Results — Basic Pipeline (Dense Retrieval)
 

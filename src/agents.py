@@ -270,9 +270,6 @@ _EVAL_BATCH_SIZE = 8  # requirements per LLM call — keeps output well under 8 
 def _run_compliance_evaluator(state: TopicState) -> dict:
     """Evaluate compliance for each requirement, processing in batches of 8.
 
-    Root cause of old 0-verdict bug: 27+ requirements produced >4 K output tokens,
-    truncating the JSON mid-array. Batching keeps each call's output ~2–3 K tokens.
-    Each batch call gets max_tokens=8192 as an additional safety margin.
     """
     topic = state["topic"]
     requirements = state.get("requirements", [])
